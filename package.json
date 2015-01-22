@@ -1,0 +1,31 @@
+{
+  "name": "miBogota",
+  "version": "0.0.1",
+  "description": "Georreferenciador para Bogota",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhonyfpb/miBogota.git"
+  },
+  "keywords": [
+    "geocoder",
+    "bogota"
+  ],
+  "author": "Rhony Pedraza",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhonyfpb/miBogota/issues"
+  },
+  "homepage": "https://github.com/rhonyfpb/miBogota",
+  "dependencies": {
+    "chalk": "0.5.x",
+    "diskdb": "0.1.x",
+    "nconf": "0.7.x",
+    "pg": "4.2.x"
+  }
+}
