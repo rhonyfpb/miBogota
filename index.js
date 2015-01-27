@@ -4,6 +4,8 @@ var localdb	= require("diskdb");
 var path	= require("path");
 var pg		= require("pg");
 
+var addr	= require("./addr.js")
+
 nconf.argv().file({ file: "./data/config.json" });
 
 var debug = nconf.get("debug") === undefined ? false : true;
@@ -29,16 +31,28 @@ client.connect(function(err) {
 	debug && console.log(chalk.cyan("Cliente conectado a postgreSQL"));
 
 	// consulta
-	//var q = "select * from pdom where coalesce(pdonvial, '') <> '' and coalesce(pdotexto, '') <> '' order by gid limit 10";
 	var q = "select gid as id, pdonvial as vpri, pdotexto as vsec, pdotipo as tipo, st_x(geom) as lon, st_y(geom) as lat ";
 	q += "from pdom where coalesce(pdonvial, '') <> '' and coalesce(pdotexto, '') <> '' and pdotipo in (1, 2, 3) ";
-	q += "order by gid limit 10";
+	q += "order by gid";
 	client.query(q, function(err, result) {
 		if(err) {
 			client.end();
 			return console.log(chalk.red("Error en la consulta: ") + err);
 		}
-		console.log(result.rows);
+		var rows = result.rows || [], rowsLength = rows.length;
+		//console.log(rows);
+		rows.forEach(function(reg, index, arr) {
+			var vpri = reg.vpri, vsec = reg.vsec;
+			//debug && console.log(chalk.cyan("vpri: ") + vpri);
+			//debug && console.log(chalk.cyan("vsec: ") + vsec);
+			//console.log(index);
+			if(!addr.parse(vpri)) {
+				console.log("id: " + reg.id);
+			}
+			if(!addr.parse(vsec)) {
+				console.log("id: " + reg.id);
+			}
+		});
 		client.end();
 	});
 });
