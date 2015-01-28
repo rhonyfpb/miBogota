@@ -33,7 +33,7 @@ client.connect(function(err) {
 	// consulta
 	var q = "select gid as id, pdonvial as vpri, pdotexto as vsec, pdotipo as tipo, st_x(geom) as lon, st_y(geom) as lat ";
 	q += "from pdom where coalesce(pdonvial, '') <> '' and coalesce(pdotexto, '') <> '' and pdotipo in (1, 2, 3) ";
-	q += "order by gid";
+	q += "order by gid limit 1";
 	client.query(q, function(err, result) {
 		if(err) {
 			client.end();
@@ -45,13 +45,18 @@ client.connect(function(err) {
 			var vpri = reg.vpri, vsec = reg.vsec;
 			//debug && console.log(chalk.cyan("vpri: ") + vpri);
 			//debug && console.log(chalk.cyan("vsec: ") + vsec);
-			//console.log(index);
-			if(!addr.parse(vpri)) {
-				console.log("id: " + reg.id);
-			}
-			if(!addr.parse(vsec)) {
-				console.log("id: " + reg.id);
-			}
+			//console.log(index);00..
+
+			//if(!addr.parse(vpri)) {
+			//	console.log("id: " + reg.id);
+			//}
+			//if(!addr.parse(vsec)) {
+			//	console.log("id: " + reg.id);
+			//}
+			addr.parse({
+				type: "vpri",
+				addr: vpri
+			});
 		});
 		client.end();
 	});
