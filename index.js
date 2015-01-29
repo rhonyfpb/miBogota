@@ -16,7 +16,7 @@ var dbparams = nconf.get("db");
 debug && console.log(chalk.cyan("Base de datos local en: " + pathdb));
 debug && console.log(chalk.cyan("Parametros de conexion: " + JSON.stringify(dbparams)));
 
-localdb.connect(pathdb, [ "formats" ]);
+localdb.connect(pathdb, [ "vpri" ]);
 
 // postgres connection
 var string = "postgres://" + dbparams.user + ":" + dbparams.pass + "@" + dbparams.host + ":" + dbparams.port + "/" + dbparams.db;

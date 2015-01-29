@@ -12,19 +12,52 @@ var rex = [
 ];
 
 exports.parse = function(params) {
-	var stack = [], temp = [], result = {};
+	var stack = [], tokens = [], result = {};
 	
 	var type = params.type || "vpri";
 	var address = params.addr || "";
 
 	if(type === "vpri") {
+		console.log(address);
 		if(address) {
 			[].forEach.apply(address, [ function(character, index, string) {
-				var pRes = false;
+				var tokenUnkown = true;
+				// se obtienen los tokens individuales
 				rex.every(function(it) {
-					//console.log(character);
+					if(it[0].test(character)) {
+						tokens.push([ character, it[1] ]);
+						tokenUnkown = false;
+						return false;
+					} else {
+						return true;
+					}
 				});
+				if(tokenUnkown) {
+					console.log("TOKEN DESCONOCIDO: "+ character);
+				}
 			} ]);
+			console.log(tokens);
+			// se procesan los tokens
+			var tempType = "";
+			var tempString = "";
+			tokens.forEach(function(token, index, arr) {
+				var text = token[0];
+				var type = token[1];
+
+				tempType = !!tempType ? tempType : type;
+				console.log("tempType", tempType);
+
+				if(tempType === type) {
+					tempString += text;
+				} else {
+					stack.push([ tempString, tempType ]);
+					tempString = "";
+					tempString += text;
+					tempType = type;
+				}
+			});
+			stack.push([ tempString, tempType ]);
+			console.log(stack);
 		} else {
 			result = false;
 		}
